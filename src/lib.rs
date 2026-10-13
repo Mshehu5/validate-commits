@@ -125,6 +125,14 @@ pub enum Error {
     FindCommit(#[source] Box<gix::object::find::existing::with_conversion::Error>),
     #[error("could not decode a selected commit: {0}")]
     DecodeCommit(#[source] gix::objs::decode::Error),
+    #[error("could not read shallow history: {0}")]
+    ReadShallowCommits(#[source] gix::shallow::read::Error),
+    #[error("could not run git fetch: {0}")]
+    SpawnGit(#[source] std::io::Error),
+    #[error("git fetch failed{}", status_suffix(.status))]
+    FetchFailed { status: ExitStatus },
+    #[error("fetch did not deepen history; origin may itself be shallow")]
+    NoHistoryProgress,
     #[error("could not write output: {0}")]
     WriteOutput(#[source] std::io::Error),
     #[error("could not start Nix while checking commit {commit}: {source}")]

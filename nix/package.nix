@@ -10,6 +10,7 @@
       commonArgs = {
         src = craneLib.cleanCargoSource ../.;
         strictDeps = true;
+        nativeCheckInputs = [ pkgs.git ];
       };
       cargoArtifacts = craneLib.buildDepsOnly commonArgs;
       validate-commits = craneLib.buildPackage (
@@ -19,7 +20,7 @@
           nativeBuildInputs = [ pkgs.makeWrapper ];
           postInstall = ''
             wrapProgram "$out/bin/validate-commits" \
-              --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.nix ]}
+              --prefix PATH : ${pkgs.lib.makeBinPath [ pkgs.nix pkgs.git ]}
           '';
         }
       );
